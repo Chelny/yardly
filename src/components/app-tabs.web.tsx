@@ -24,6 +24,7 @@ export default function AppTabs(): React.JSX.Element {
             name="home"
             href="/"
             asChild
+            testID="app-tabs-web_link_home"
           >
             <TabButton>Home</TabButton>
           </TabTrigger>
@@ -31,6 +32,7 @@ export default function AppTabs(): React.JSX.Element {
             name="services"
             href="/services"
             asChild
+            testID="app-tabs-web_link_services"
           >
             <TabButton>Services</TabButton>
           </TabTrigger>
@@ -38,6 +40,7 @@ export default function AppTabs(): React.JSX.Element {
             name="booking"
             href="/booking"
             asChild
+            testID="app-tabs-web_link_booking"
           >
             <TabButton>Book</TabButton>
           </TabTrigger>
@@ -45,6 +48,7 @@ export default function AppTabs(): React.JSX.Element {
             name="invoices"
             href="/invoices"
             asChild
+            testID="app-tabs-web_link_invoices"
           >
             <TabButton>Invoices</TabButton>
           </TabTrigger>
@@ -52,6 +56,7 @@ export default function AppTabs(): React.JSX.Element {
             name="profile"
             href="/profile"
             asChild
+            testID="app-tabs-web_link_profile"
           >
             <TabButton>Profile</TabButton>
           </TabTrigger>

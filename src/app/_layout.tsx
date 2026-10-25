@@ -99,13 +99,12 @@ export default function RootLayout(): React.ReactNode {
     <ThemeProvider value={navigationTheme(scheme)}>
       <AnimatedSplashOverlay />
       <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-        {/* TODO: REVERT THE GUARD LOGIC */}
-        <Stack.Protected guard={!!session}>
+        <Stack.Protected guard={!session}>
           <Stack.Screen name="index" />
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
 
-        <Stack.Protected guard={!session}>
+        <Stack.Protected guard={!!session}>
           <Stack.Screen name="(tabs)" />
         </Stack.Protected>
 
