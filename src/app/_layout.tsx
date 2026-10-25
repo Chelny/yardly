@@ -1,9 +1,9 @@
-import { EventSubscription, Platform } from "expo";
+import { EventSubscription } from "expo";
 import * as Linking from "expo-linking";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
-import { useColorScheme } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { Colors } from "@/constants/theme";
@@ -99,12 +99,13 @@ export default function RootLayout(): React.ReactNode {
     <ThemeProvider value={navigationTheme(scheme)}>
       <AnimatedSplashOverlay />
       <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-        <Stack.Protected guard={!session}>
+        {/* TODO: REVERT THE GUARD LOGIC */}
+        <Stack.Protected guard={!!session}>
           <Stack.Screen name="index" />
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
 
-        <Stack.Protected guard={!!session}>
+        <Stack.Protected guard={!session}>
           <Stack.Screen name="(tabs)" />
         </Stack.Protected>
 

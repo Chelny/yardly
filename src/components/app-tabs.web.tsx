@@ -11,6 +11,7 @@ import { Pressable, StyleSheet, useColorScheme, View } from "react-native";
 import { ExternalLink } from "@/components/external-link";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { APP_NAME } from "@/constants/app";
 import { Colors, MaxContentWidth, Spacing } from "@/constants/theme";
 
 export default function AppTabs(): React.JSX.Element {
@@ -26,9 +27,34 @@ export default function AppTabs(): React.JSX.Element {
           >
             <TabButton>Home</TabButton>
           </TabTrigger>
-          {/* <TabTrigger name="explore" href="/explore" asChild>
-            <TabButton>Explore</TabButton>
-          </TabTrigger> */}
+          <TabTrigger
+            name="services"
+            href="/services"
+            asChild
+          >
+            <TabButton>Services</TabButton>
+          </TabTrigger>
+          <TabTrigger
+            name="booking"
+            href="/booking"
+            asChild
+          >
+            <TabButton>Book</TabButton>
+          </TabTrigger>
+          <TabTrigger
+            name="invoices"
+            href="/invoices"
+            asChild
+          >
+            <TabButton>Invoices</TabButton>
+          </TabTrigger>
+          <TabTrigger
+            name="profile"
+            href="/profile"
+            asChild
+          >
+            <TabButton>Profile</TabButton>
+          </TabTrigger>
         </CustomTabList>
       </TabList>
     </Tabs>
@@ -83,17 +109,17 @@ export function CustomTabList(props: TabListProps) {
           type="smallBold"
           style={styles.brandText}
         >
-          Expo Starter
+          {APP_NAME}
         </ThemedText>
 
         {props.children}
 
         <ExternalLink
-          href="https://docs.expo.dev"
+          href="https://www.github.com/Chelny/yardly"
           asChild
         >
           <Pressable style={styles.externalPressable}>
-            <ThemedText type="link">Docs</ThemedText>
+            <ThemedText type="link">GitHub</ThemedText>
             <SymbolView
               tintColor={colors.text}
               name={{ ios: "arrow.up.right.square", web: "link" }}

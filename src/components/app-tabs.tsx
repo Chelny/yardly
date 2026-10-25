@@ -10,7 +10,14 @@ export default function AppTabs(): React.JSX.Element {
     <NativeTabs
       backgroundColor={colors.background}
       indicatorColor={colors.backgroundElement}
-      labelStyle={{ selected: { color: colors.text } }}
+      iconColor={{
+        default: colors.textSecondary,
+        selected: colors.primary,
+      }}
+      labelStyle={{
+        selected: { color: colors.primary },
+        default: { color: colors.textSecondary },
+      }}
     >
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
@@ -20,13 +27,37 @@ export default function AppTabs(): React.JSX.Element {
         />
       </NativeTabs.Trigger>
 
-      {/* <NativeTabs.Trigger name="explore">
-        <NativeTabs.Trigger.Label>Explore</NativeTabs.Trigger.Label>
+      <NativeTabs.Trigger name="services">
+        <NativeTabs.Trigger.Label>Services</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/explore.png')}
+          src={require("@/assets/images/tabIcons/services.png")}
           renderingMode="template"
         />
-      </NativeTabs.Trigger> */}
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="booking">
+        <NativeTabs.Trigger.Label>Book</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          src={require("@/assets/images/tabIcons/booking.png")}
+          renderingMode="template"
+        />
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="invoices">
+        <NativeTabs.Trigger.Label>Invoices</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          src={require("@/assets/images/tabIcons/invoices.png")}
+          renderingMode="template"
+        />
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="profile">
+        <NativeTabs.Trigger.Label>Profile</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          src={require("@/assets/images/tabIcons/profile.png")}
+          renderingMode="template"
+        />
+      </NativeTabs.Trigger>
     </NativeTabs>
   );
 }

@@ -1,7 +1,3 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- */
-
 import { Platform, type TextStyle } from "react-native";
 
 export interface Palette {
@@ -25,7 +21,7 @@ export const Colors: { light: Palette; dark: Palette } = {
   light: {
     text: "#0f172a",
     textSecondary: "#60646C",
-    background: "#f8fafc", // subtle gray, not pure white
+    background: "#f8fafc",
     backgroundElement: "#F0F0F3",
     backgroundSelected: "#E0E1E6",
 
@@ -49,11 +45,11 @@ export const Colors: { light: Palette; dark: Palette } = {
   dark: {
     text: "#e2e8f0",
     textSecondary: "#B0B4BA",
-    background: "#1e293b", // slate-800, NOT pitch black
+    background: "#18181b",
     backgroundElement: "#212225",
     backgroundSelected: "#2E3135",
 
-    primary: "#22c55e", // slightly lighter green for dark bg contrast
+    primary: "#22c55e",
     primaryForeground: "#052e16",
     primaryPressed: "#16a34a",
 
