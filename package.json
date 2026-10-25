@@ -2,21 +2,35 @@
   "name": "lawn-snow-app",
   "version": "1.0.0",
   "main": "expo-router/entry",
+  "description": "Book seasonal home services from local providers. Snow, lawn, hedges, pool — tracked, priced, and invoiced in one app.",
+  "author": "Chelny Duplan",
+  "funding": {
+    "type": "patreon",
+    "url": "https://www.patreon.com/Chelny"
+  },
   "dependencies": {
-    "@expo/ui": "~58.0.21",
-    "expo": "~58.0.16",
-    "expo-constants": "~58.0.12",
+    "@expo/ui": "~58.0.22",
+    "@julekgwa/react-native-places-autocomplete": "^1.0.2",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@supabase/supabase-js": "^2.118.0",
+    "expo": "~58.0.17",
+    "expo-constants": "~58.0.13",
+    "expo-dev-client": "~58.0.14",
     "expo-device": "~58.0.5",
+    "expo-document-picker": "~58.0.4",
     "expo-font": "~58.0.9",
     "expo-glass-effect": "~58.0.4",
     "expo-image": "~58.0.16",
-    "expo-linking": "~58.0.13",
-    "expo-router": "~58.0.24",
-    "expo-splash-screen": "~58.0.10",
-    "expo-status-bar": "~58.0.3",
+    "expo-linear-gradient": "~58.0.3",
+    "expo-linking": "~58.0.14",
+    "expo-location": "~58.0.19",
+    "expo-router": "~58.0.25",
+    "expo-splash-screen": "~58.0.11",
+    "expo-status-bar": "~58.0.4",
     "expo-symbols": "~58.0.4",
     "expo-system-ui": "~58.0.6",
     "expo-web-browser": "~58.0.6",
+    "lucide-react-native": "^1.60.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-native": "0.88.0",
@@ -24,20 +38,51 @@
     "react-native-reanimated": "4.7.1",
     "react-native-safe-area-context": "~5.10.1",
     "react-native-screens": "~4.30.0",
+    "react-native-svg": "15.16.0",
+    "react-native-url-polyfill": "^4.0.0",
     "react-native-web": "~0.21.4",
     "react-native-worklets": "0.13.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@commitlint/types": "^21.2.3",
     "@types/react": "~19.3.0",
-    "typescript": "~6.0.3"
+    "eslint": "^10.13.0",
+    "eslint-plugin-perfectionist": "^5.13.0",
+    "eslint-plugin-prettier": "^5.5.7",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.7.0",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.0"
   },
   "scripts": {
     "start": "expo start",
+    "dev": "expo start --dev-client --clear",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "lint:fix": "expo lint --fix",
+    "prettier:check": "prettier --check \"src/**/*.{ts,tsx,json,md}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
+    "ts-check": "tsc --noEmit",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   },
   "private": true
 }
