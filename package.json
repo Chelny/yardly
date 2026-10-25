@@ -1,5 +1,5 @@
 {
-  "name": "lawn-snow-app",
+  "name": "yardly",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "description": "Book seasonal home services from local providers. Snow, lawn, hedges, pool — tracked, priced, and invoiced in one app.",

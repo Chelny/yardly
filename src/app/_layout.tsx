@@ -2,8 +2,9 @@ import { EventSubscription, Platform } from "expo";
 import * as Linking from "expo-linking";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { Colors } from "@/constants/theme";
 import { supabase } from "@/lib/supabase";
@@ -27,24 +28,49 @@ const navigationTheme = (scheme: "light" | "dark") => {
   };
 };
 
-export default function RootLayout(): React.JSX.Element {
+export default function RootLayout(): React.ReactNode {
   const scheme = useColorScheme() ?? "light";
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const legalScreenPresentation =
     Platform.OS === "ios" || Platform.OS === "android"
       ? "formSheet"
       : undefined;
-  const isLoggedIn: boolean = false;
 
-  // Handle Supabase recovery deep link: lawn-snow-app://reset-password#access_token=...
+  useEffect(() => {
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }: { data: { session: Session | null } }) => {
+        setSession(session);
+      })
+      .catch(() => {
+        setSession(null);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => {
+        setSession(session);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Handle Supabase recovery deep link: yardly://reset-password#access_token=...
   useEffect(() => {
     const handleUrl = async (url: string | null) => {
       if (!url) return;
-      const parsed = Linking.parse(url);
-      const hash = url.split("#")[1];
+      const parsed: Linking.ParsedURL = Linking.parse(url);
+      const hash: string | undefined = url.split("#")[1];
       if (!hash) return;
-      const params = new URLSearchParams(hash);
-      const access_token = params.get("access_token");
-      const refresh_token = params.get("refresh_token");
+      const params: URLSearchParams = new URLSearchParams(hash);
+      const access_token: string | null = params.get("access_token");
+      const refresh_token: string | null = params.get("refresh_token");
       if (access_token && refresh_token) {
         await supabase.auth.setSession({ access_token, refresh_token });
       }
@@ -59,16 +85,26 @@ export default function RootLayout(): React.JSX.Element {
     return () => sub.remove();
   }, []);
 
+  useEffect(() => {
+    if (!isLoading) {
+      SplashScreen.hideAsync();
+    }
+  }, [isLoading]);
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <ThemeProvider value={navigationTheme(scheme)}>
       <AnimatedSplashOverlay />
       <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-        <Stack.Protected guard={!isLoggedIn}>
+        <Stack.Protected guard={!session}>
           <Stack.Screen name="index" />
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
 
-        <Stack.Protected guard={isLoggedIn}>
+        <Stack.Protected guard={!!session}>
           <Stack.Screen name="(tabs)" />
         </Stack.Protected>
 
