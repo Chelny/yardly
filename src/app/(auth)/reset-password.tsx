@@ -48,7 +48,7 @@ export default function ResetPasswordScreen(): React.JSX.Element {
 
     if (!supaError) {
       router.dismissAll();
-      router.replace("/sign-in");
+      router.replace("/");
     } else {
       setErrors({ confirmPassword: supaError.message });
     }

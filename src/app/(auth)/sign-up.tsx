@@ -212,7 +212,7 @@ export default function SignUpScreen(): React.JSX.Element {
         <Button
           label="Back to Sign In"
           variant="outline"
-          onPress={() => router.replace("/sign-in")}
+          onPress={() => router.replace("/")}
           testID="sign-up_button_back-to-sign-in"
         />
       </View>
@@ -433,7 +433,7 @@ export default function SignUpScreen(): React.JSX.Element {
           <View style={styles.footer}>
             <ThemedText type="muted">Already have an account? </ThemedText>
             <TextLink
-              href="/sign-in"
+              href="/"
               testID="sign-up_link_sign-in"
             >
               Sign In

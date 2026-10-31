@@ -54,7 +54,7 @@ export const Colors: { light: Palette; dark: Palette } = {
     primaryPressed: "#16a34a",
 
     border: "#334155",
-    input: "#0f172a",
+    input: "#27272a",
 
     destructive: "#ef4444",
     destructiveForeground: "#ffffff",

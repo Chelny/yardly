@@ -25,6 +25,7 @@
     "expo-linking": "~58.0.14",
     "expo-location": "~58.0.19",
     "expo-router": "~58.0.25",
+    "expo-secure-store": "~58.0.2",
     "expo-splash-screen": "~58.0.11",
     "expo-status-bar": "~58.0.4",
     "expo-symbols": "~58.0.4",
@@ -41,7 +42,8 @@
     "react-native-svg": "15.16.0",
     "react-native-url-polyfill": "^4.0.0",
     "react-native-web": "~0.21.4",
-    "react-native-worklets": "0.13.0"
+    "react-native-worklets": "0.13.0",
+    "zustand": "^5.0.16"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
@@ -84,5 +86,6 @@
       "prettier --write"
     ]
   },
-  "private": true
+  "private": true,
+  "type": "module"
 }

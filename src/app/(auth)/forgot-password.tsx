@@ -81,7 +81,7 @@ export default function ForgotPasswordScreen(): React.JSX.Element {
             label="Back to Sign In"
             variant="outline"
             testID="forgot-password_button_back-to-sign-in"
-            onPress={() => router.replace("/sign-in")}
+            onPress={() => router.replace("/")}
           />
         </View>
       </View>
@@ -127,7 +127,7 @@ export default function ForgotPasswordScreen(): React.JSX.Element {
               label="Back to Sign In"
               variant="outline"
               testID="forgot-password_button_back-to-sign-in"
-              onPress={() => router.replace("/sign-in")}
+              onPress={() => router.replace("/")}
             />
           </View>
         </View>

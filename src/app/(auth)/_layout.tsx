@@ -5,13 +5,12 @@ export default function AuthLayout(): React.JSX.Element {
     <Stack
       screenOptions={{
         headerShown: true,
-        headerBackTitle: "Back",
         headerBackButtonDisplayMode: "minimal",
         gestureEnabled: false,
       }}
     >
       <Stack.Screen
-        name="sign-in"
+        name="index"
         options={{ headerShown: false }}
       />
       <Stack.Screen

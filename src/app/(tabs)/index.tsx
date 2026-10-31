@@ -2,6 +2,10 @@ import { Link } from "expo-router";
 import { Platform, useWindowDimensions } from "react-native";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import {
   CalendarDays,
   Droplet,
   Droplets,
@@ -55,7 +59,8 @@ const UNPAID_TOTAL = 145.0;
 export default function OverviewScreen(): React.JSX.Element {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
-  const isDesktop = width >= 768;
+  const insets = useSafeAreaInsets();
+  const isDesktop: boolean = width >= 768;
 
   const rescheduleStyle = StyleSheet.flatten([
     styles.cardAction,
@@ -68,217 +73,228 @@ export default function OverviewScreen(): React.JSX.Element {
   ]);
 
   return (
-    <ScrollView
-      style={{ backgroundColor: colors.background }}
-      contentContainerStyle={styles.content}
-      showsVerticalScrollIndicator={false}
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: colors.background }}
+      edges={["bottom"]}
     >
-      <View style={styles.header}>
-        <ThemedText type="h2">Welcome back</ThemedText>
-        <ThemedText type="muted">
-          Here&apos;s what&apos;s happening with your yard.
-        </ThemedText>
-      </View>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={[
+          styles.content,
+          { paddingBottom: insets.bottom },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.header}>
+          <ThemedText type="h2">Welcome back</ThemedText>
+          <ThemedText type="muted">
+            Here&apos;s what&apos;s happening with your yard.
+          </ThemedText>
+        </View>
 
-      <View style={styles.grid}>
-        {/* Next visit */}
-        <View
-          style={[
-            styles.card,
-            {
-              backgroundColor: colors.backgroundElement,
-              borderColor: colors.border,
-            },
-          ]}
-        >
-          <View style={styles.cardHeader}>
-            <CalendarDays
-              size={18}
-              color={colors.primary}
-            />
+        <View style={styles.grid}>
+          {/* Next visit */}
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: colors.backgroundElement,
+                borderColor: colors.border,
+              },
+            ]}
+          >
+            <View style={styles.cardHeader}>
+              <CalendarDays
+                size={18}
+                color={colors.primary}
+              />
+              <ThemedText
+                type="label"
+                themeColor="textSecondary"
+              >
+                Next visit
+              </ThemedText>
+            </View>
             <ThemedText
-              type="label"
+              type="h3"
+              style={styles.cardTitle}
+            >
+              {UPCOMING.service}
+            </ThemedText>
+            <ThemedText
+              type="body"
               themeColor="textSecondary"
             >
-              Next visit
+              {UPCOMING.date}
             </ThemedText>
+            <ThemedText
+              type="caption"
+              themeColor="textSecondary"
+              style={styles.provider}
+            >
+              {UPCOMING.provider}
+            </ThemedText>
+            <Link
+              href="/booking"
+              asChild
+              testID="overview_link_reschedule"
+            >
+              <Button
+                label="Reschedule"
+                variant="outline"
+                style={rescheduleStyle}
+              />
+            </Link>
           </View>
-          <ThemedText
-            type="h3"
-            style={styles.cardTitle}
+
+          {/* Unpaid invoices */}
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: colors.backgroundElement,
+                borderColor: colors.border,
+              },
+            ]}
           >
-            {UPCOMING.service}
-          </ThemedText>
-          <ThemedText
-            type="body"
-            themeColor="textSecondary"
-          >
-            {UPCOMING.date}
-          </ThemedText>
-          <ThemedText
-            type="caption"
-            themeColor="textSecondary"
-            style={styles.provider}
-          >
-            {UPCOMING.provider}
-          </ThemedText>
+            <View style={styles.cardHeader}>
+              <Receipt
+                size={18}
+                color={colors.primary}
+              />
+              <ThemedText
+                type="label"
+                themeColor="textSecondary"
+              >
+                Unpaid balance
+              </ThemedText>
+            </View>
+            <ThemedText
+              type="h2"
+              style={styles.cardTitle}
+            >
+              ${UNPAID_TOTAL.toFixed(2)}
+            </ThemedText>
+            <ThemedText
+              type="caption"
+              themeColor="textSecondary"
+            >
+              Across {UNPAID_COUNT} invoices
+            </ThemedText>
+            <Link
+              href="/invoices"
+              asChild
+              testID="overview_link_view-invoices"
+            >
+              <Button
+                label="View invoices"
+                style={viewInvoicesStyle}
+              />
+            </Link>
+          </View>
+        </View>
+
+        {/* Seasonal usage */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <ThemedText type="h3">Seasonal usage</ThemedText>
+            <TextLink
+              href="/services"
+              variant="muted"
+              testID="overview_link_view-services"
+            >
+              View services
+            </TextLink>
+          </View>
+          <View style={styles.usageList}>
+            {USAGE.map((item: SeasonalUsage) => {
+              const ratio: number = item.cap > 0 ? item.used / item.cap : 0;
+              const Icon: LucideIcon =
+                item.icon === "snow"
+                  ? Snowflake
+                  : item.icon === "pool"
+                    ? Droplets
+                    : item.icon === "leaf-blow"
+                      ? Wind
+                      : item.icon === "hedge"
+                        ? Scissors
+                        : item.icon === "gutter"
+                          ? Droplet
+                          : Leaf;
+              return (
+                <View
+                  key={item.id}
+                  style={[
+                    styles.usageRow,
+                    { borderBottomColor: colors.border },
+                  ]}
+                >
+                  <View style={styles.usageInfo}>
+                    <Icon
+                      size={18}
+                      color={colors.primary}
+                    />
+                    <ThemedText
+                      type="body"
+                      style={styles.usageLabel}
+                    >
+                      {item.service}
+                    </ThemedText>
+                  </View>
+                  <ThemedText
+                    type="caption"
+                    themeColor="textSecondary"
+                  >
+                    {item.used} / {item.cap}
+                  </ThemedText>
+                  <View
+                    style={[
+                      styles.progressTrack,
+                      { backgroundColor: colors.backgroundSelected },
+                    ]}
+                  >
+                    <View
+                      style={[
+                        styles.progressFill,
+                        {
+                          backgroundColor: colors.primary,
+                          width: `${Math.min(ratio, 1) * 100}%`,
+                        },
+                      ]}
+                    />
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Quick actions */}
+        <View style={styles.actions}>
           <Link
             href="/booking"
             asChild
-            testID="overview_link_reschedule"
+            testID="overview_link_book-service"
           >
             <Button
-              label="Reschedule"
-              variant="outline"
-              style={rescheduleStyle}
+              label="Book a service"
+              style={styles.actionButton}
             />
           </Link>
-        </View>
-
-        {/* Unpaid invoices */}
-        <View
-          style={[
-            styles.card,
-            {
-              backgroundColor: colors.backgroundElement,
-              borderColor: colors.border,
-            },
-          ]}
-        >
-          <View style={styles.cardHeader}>
-            <Receipt
-              size={18}
-              color={colors.primary}
-            />
-            <ThemedText
-              type="label"
-              themeColor="textSecondary"
-            >
-              Unpaid balance
-            </ThemedText>
-          </View>
-          <ThemedText
-            type="h2"
-            style={styles.cardTitle}
-          >
-            ${UNPAID_TOTAL.toFixed(2)}
-          </ThemedText>
-          <ThemedText
-            type="caption"
-            themeColor="textSecondary"
-          >
-            Across {UNPAID_COUNT} invoices
-          </ThemedText>
           <Link
-            href="/invoices"
+            href="/profile"
             asChild
-            testID="overview_link_view-invoices"
+            testID="overview_link_manage-profile"
           >
             <Button
-              label="View invoices"
-              style={viewInvoicesStyle}
+              label="Manage profile"
+              variant="outline"
+              style={styles.actionButton}
             />
           </Link>
         </View>
-      </View>
-
-      {/* Seasonal usage */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <ThemedText type="h3">Seasonal usage</ThemedText>
-          <TextLink
-            href="/services"
-            variant="muted"
-            testID="overview_link_view-services"
-          >
-            View services
-          </TextLink>
-        </View>
-        <View style={styles.usageList}>
-          {USAGE.map((item: SeasonalUsage) => {
-            const ratio: number = item.cap > 0 ? item.used / item.cap : 0;
-            const Icon: LucideIcon =
-              item.icon === "snow"
-                ? Snowflake
-                : item.icon === "pool"
-                  ? Droplets
-                  : item.icon === "leaf-blow"
-                    ? Wind
-                    : item.icon === "hedge"
-                      ? Scissors
-                      : item.icon === "gutter"
-                        ? Droplet
-                        : Leaf;
-            return (
-              <View
-                key={item.id}
-                style={[styles.usageRow, { borderBottomColor: colors.border }]}
-              >
-                <View style={styles.usageInfo}>
-                  <Icon
-                    size={18}
-                    color={colors.primary}
-                  />
-                  <ThemedText
-                    type="body"
-                    style={styles.usageLabel}
-                  >
-                    {item.service}
-                  </ThemedText>
-                </View>
-                <ThemedText
-                  type="caption"
-                  themeColor="textSecondary"
-                >
-                  {item.used} / {item.cap}
-                </ThemedText>
-                <View
-                  style={[
-                    styles.progressTrack,
-                    { backgroundColor: colors.backgroundSelected },
-                  ]}
-                >
-                  <View
-                    style={[
-                      styles.progressFill,
-                      {
-                        backgroundColor: colors.primary,
-                        width: `${Math.min(ratio, 1) * 100}%`,
-                      },
-                    ]}
-                  />
-                </View>
-              </View>
-            );
-          })}
-        </View>
-      </View>
-
-      {/* Quick actions */}
-      <View style={styles.actions}>
-        <Link
-          href="/booking"
-          asChild
-          testID="overview_link_book-service"
-        >
-          <Button
-            label="Book a service"
-            style={styles.actionButton}
-          />
-        </Link>
-        <Link
-          href="/profile"
-          asChild
-          testID="overview_link_manage-profile"
-        >
-          <Button
-            label="Manage profile"
-            variant="outline"
-            style={styles.actionButton}
-          />
-        </Link>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
